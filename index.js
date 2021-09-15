@@ -1,12 +1,12 @@
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
 
-//Printing Hello World in node.js.
-// const hello = 'hello Saurabh';
-// console.log(hello);
 
 
+////////////////////////////////////////////////////////////////////////////////
 //* File System Module:-
 
-const fs = require('fs');
 
 //Synchronous way.
 //!Synchronous type code. Each operation executes line by line.
@@ -34,20 +34,47 @@ const fs = require('fs');
 
 
 //? Reading a file...
-fs.readFile('./txt/start.txt', 'utf-8', (err, data1) => {
+// fs.readFile('./txt/start.txt', 'utf-8', (err, data1) => {
 
-    if(err) { return console.log("Error! ⚡")}
+//     if(err) { return console.log("Error! ⚡")}
     
-    fs.readFile(`./txt/${data1}.txt`, 'utf-8', (err, data2) => {
-        console.log(data2);
-        fs.readFile('./txt/append.txt', 'utf-8', (err, data3) => {
-            console.log(data3);
+//     fs.readFile(`./txt/${data1}.txt`, 'utf-8', (err, data2) => {
+//         console.log(data2);
+//         fs.readFile('./txt/append.txt', 'utf-8', (err, data3) => {
+//             console.log(data3);
 
-            //? Writting on a file.
-            fs.writeFile('./txt/final.txt', `${data2}\n${data3}`, 'utf-8', err => {
-                console.log('Your file has been written 😋');
-            })
+//             //? Writting on a file.
+//             fs.writeFile('./txt/final.txt', `${data2}\n${data3}`, 'utf-8', err => {
+//                 console.log('Your file has been written 😋');
+//             })
+//         });
+//     });
+// });
+// console.log("Will read file....");
+
+
+/////////////////////////////////////////////////////////////////////////
+//* Server Module:-
+
+const server = http.createServer((req, res) => {
+    //console.log(req);
+    //console.log(req.url);
+
+    const patName =req.url;
+    if(patName === '/' || patName === '/overview'){
+        res.end('This is the OVERVIEW!');
+    } else if(patName === '/product'){
+        res.end('This is the PRODUCT!');
+    }
+    else {
+        res.writeHead(404,{
+            'Content-type': 'text/html',
+            'my-own-header': 'hello-world'
         });
-    });
+        res.end('<h1>Page not found!</h1>');
+    }
+    // res.end('Hello from the server!');
 });
-console.log("Will read file....");
+server.listen(8080, '127.0.0.1', () => {
+    console.log('Listening to requests on port 8080');
+});
