@@ -56,6 +56,11 @@ const url = require('url');
 /////////////////////////////////////////////////////////////////////////
 //* Server Module:-
 
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+const dataObj = JSON.parse(data);
+
+
+
 const server = http.createServer((req, res) => {
     //console.log(req);
     //console.log(req.url);
@@ -65,6 +70,18 @@ const server = http.createServer((req, res) => {
         res.end('This is the OVERVIEW!');
     } else if(patName === '/product'){
         res.end('This is the PRODUCT!');
+    }
+    else if(patName === '/api')
+    {
+        /*fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
+            const productData = JSON.parse(data);
+            // console.log(productData);
+            res.writeHead(200 , { 'Content-Type': 'application/json'});
+            res.end(data);
+        });*/
+        res.writeHead(200 , { 'Content-Type': 'application/json'});
+        res.end(data);
+        //res.end('API');
     }
     else {
         res.writeHead(404,{
